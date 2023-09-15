@@ -1,11 +1,14 @@
 #/bin/bash
 # usage ./firewall_nc.sh <egress_ip> <namespace>
 # don't forget to fill in destination ip & port into "ipadress_destination.txt" file
+# Change image in each ENV
+# Note: The original script still fix image, you must uncomment image for using value $nc_image
 
 # namespace="tcrb-infra-utility"
 deployment_name="nc"
 egress_ip=$1
 namespace=$2
+nc_image="mir.npd.ocp.tcbank.local:8443/library/alpine:latest"
 
 echo patch egress ip $egress_ip to namespace $namespace
 if [ -z "$1" ] || [ -z "$2" ]
@@ -37,6 +40,7 @@ cat << EOF | kubectl apply -f -
       spec:
         containers:
         - name: c1
+          # image: $nc_image
           image: 'mir.npd.ocp.tcbank.local:8443/library/alpine:latest'
           args:
           - sleep
